@@ -1,111 +1,136 @@
-var $rootURL
-var $searchunacceptedurl
+var $rootURL;
+var savedData;
 
-if ($rootURL == undefined) {$rootURL = "https://aomev.service-now.com"}
+function loadOptions() {
+    chrome.storage.sync.get(['rooturl', 'q1name', 'q1url', 'q2name', 'q2url', 'q3name', 'q3url' , 'q4name', 'q4url' , 'l1name' , 'l1url' , 'l2name', 'l2url', 'l3name', 'l3url', 'l4name', 'l4url', 'create', 'call', 'incident', 'change', 'request', 'search', 'queues', 'queue1', 'queue2', 'queue3', 'queue4', 'lists', 'list1', 'list2', 'list3', 'list4'], function(items) {
+				savedData = items;
 
-function loadOptions () {
-	chrome.storage.sync.get(['groups','rootURL','searchunacceptedurl'], function (items) {
-		if (items.rootURL != undefined) {
-			$rootURL = items.rootURL
-		}
-		$searchunacceptedurl = items.searchunacceptedurl
-		$("#groupname").val(items.groups);
-	});
+				if (items.rooturl == undefined) {
+            console.log("Root URL not Set.");
+        }
+        $rootURL = items.rooturl;
+        $.each(items, function(key, value) {
+            if (value == true || value == false) {
+                if (value == true) {
+                    var myClass = "." + key;
+                    $(myClass).toggle();
+                } else {}
+            } else {
+                var str = value;
+                var ishttp = str.substr(0, 4);
+                if (ishttp == "http") {} else {
+                    var myClass = "." + key;
+                    $(myClass).html(value);
+                }
+            }
+        });
+    })
 }
 
 $(document).ready(function() {
-	loadOptions()
-	$("#status").hide();
-	$("#allgroups").change(function() {
-		if($(this).is(":checked")) {
-			$("#groupname").val("")
-			$("#groupname").prop('disabled', true);
-		} else {
-			$("#groupname").prop('disabled', false);
-		}
-	}); 
-	
-	$("#groupname").keyup(function(event){
-		if(event.keyCode == 13){
-			$("#save").click();
-		}
-	})
-	
-	$("#searchinput").keyup(function(event){
-		if(event.keyCode == 13){
-			$("#idsearch").click();
-		}
-	})
-	
-	$("#idunacceptedbutton").click(function (){
-		chrome.tabs.create({active: true, url: $rootURL + "/incident_list.do?sysparm_userpref_module=3357969fa14c71001d242169f15e70ac&sysparm_query=incident_state=3^assignment_group=javascript:gs.getUser().getMyGroups();^EQ"});
-	})
-	
-	$("#idunacceptedworkflowbutton").click(function (){
-		chrome.tabs.create({active: true, url: $rootURL + "/u_inc_wftask_list.do?sysparm_query=iwt_u_assigned_group%3Djavascript%3AgetMyGroupsAdvanced2(4)%5Eiwt_u_assigned_group%3Dd2c17b14e9082d007e9753d310d3051b%5Eiwt_u_task_status%3D1%5EORDERBYinc_u_updated_by_customer&sysparm_view="});
-	})
-	
-	$("#idacceptedbutton").click(function (){
-		chrome.tabs.create({active: true, url: $rootURL + "/incident_list.do?sysparm_userpref_module=e0d40a1fa14c71001d242169f15e70d2&sysparm_query=active=true^incident_stateNOT%20IN6,7^u_accepted_by=javascript:gs.getUserID();^EQ"});
-	})
-	
-	$("#save").click(function (){
-		save_options()
-	})
-	
-	$("#newticket").click(function (){
-		chrome.tabs.create({active: true, url: $rootURL + "/incident.do?sysparm_stack=incident_list.do&sys_id=-1"});
-	})
-	$("#newproblem").click(function (){
-		chrome.tabs.create({active: true, url: $rootURL + "/problem.do?sysparm_stack=problem_list.do&sys_id=-1"});
-	})
-	$("#newcr").click(function (){
-		chrome.tabs.create({active: true, url: $rootURL + "/change_request.do?sysparm_stack=change_request_list.do&sys_id=-1&sysparm_query=active=true"});
-	})
-	$("#newios").click(function (){
-		chrome.tabs.create({active: true, url: $rootURL + "/u_interruption_of_service.do?sysparm_stack=u_interruption_of_service_list.do&sys_id=-1"});
-	})
-	$("#idsearch").click(function (){
-		var $input = $("#searchinput").val()
-		var $urlTicketSearch = $rootURL
-		if ($input.indexOf("CR") != -1) {
-			$urlTicketSearch = $urlTicketSearch + "/change_request.do?sys_id=" +  $input	
-		} else if ($input.indexOf("INC") != -1) {
-			$urlTicketSearch = $urlTicketSearch + "/incident.do?sys_id=" +  $input
-		} else if ($input.indexOf("PRB") != -1) {
-			$urlTicketSearch = $urlTicketSearch + "/problem.do?sys_id=" +  $input
-		} else if ($input.indexOf("IOS") != -1) {
-			$urlTicketSearch = $urlTicketSearch + "/u_interruption_of_service.do?sys_id=" +  $input
-		} else {
-			$urlTicketSearch = $urlTicketSearch + "/textsearch.do?sysparm_no_redirect=true&sysparm_search=" + $input
-		}
-		  
-		chrome.tabs.create({'url':$urlTicketSearch})
-	})
+    loadOptions()
+
+
+
+    $("#searchinput").keyup(function(event) {
+        if (event.keyCode == 13) {
+            $("#idsearch").click();
+        }
+    })
+
+    $("#queue1btn").click(function() {
+        chrome.tabs.create({
+            active: true,
+            url: savedData.q1url
+        });
+    })
+    $("#queue2btn").click(function() {
+        chrome.tabs.create({
+            active: true,
+            url: savedData.q2url
+        });
+    })
+    $("#queue3btn").click(function() {
+        chrome.tabs.create({
+            active: true,
+            url: savedData.q3url
+        });
+    })
+    $("#queue4btn").click(function() {
+        chrome.tabs.create({
+            active: true,
+            url: savedData.q4url
+        });
+    })
+
+    $("#list1btn").click(function() {
+        chrome.tabs.create({
+            active: true,
+            url: savedData.l1url
+        });
+    })
+    $("#list2btn").click(function() {
+        chrome.tabs.create({
+            active: true,
+            url: savedData.l2url
+        });
+    })
+    $("#list3btn").click(function() {
+        chrome.tabs.create({
+            active: true,
+            url: savedData.l3url
+        });
+    })
+    $("#list4btn").click(function() {
+        chrome.tabs.create({
+            active: true,
+            url: savedData.l4url
+        });
+    })
+
+
+    $("#newcallbtn").click(function() {
+        chrome.tabs.create({
+            active: true,
+            url: $rootURL + "/nav_to.do?uri=%2Fnew_call.do%3Fsysparm_stack%3Dnew_call_list.do%26sys_id%3D-1"
+        });
+    })
+    $("#newticketbtn").click(function() {
+        chrome.tabs.create({
+            active: true,
+            url: $rootURL + "/nav_to.do?uri=%2Fincident.do%3Fsys_id%3D-1%26sysparm_query%3Dactive%3Dtrue%26sysparm_stack%3Dincident_list.do%3Fsysparm_query%3Dactive%3Dtrue"
+        });
+    })
+    $("#newrequestbtn").click(function() {
+        chrome.tabs.create({
+            active: true,
+            url: $rootURL + "/nav_to.do?uri=%2Fcatalog_home.do%3Fv%3D1%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default"
+        });
+    })
+		$("#newchangebtn").click(function() {
+        chrome.tabs.create({
+            active: true,
+            url: $rootURL + "/nav_to.do?uri=%2Fwizard_view.do%3Fsys_target%3Dchange_request%26sysparm_stack%3Dchange_request_list.do%26sysparm_wizardAction%3Dsysverb_new%26sysparm_parent%3D8db4a378c611227401b96457a060e0f4"
+        });
+    })
+
+    $("#idsearch").click(function() {
+        var $input = $("#searchinput").val()
+        var $urlTicketSearch = $rootURL
+        if ($input.indexOf("RITM") != -1) {
+            $urlTicketSearch = $urlTicketSearch + "/sc_req_item.do?sys_id=" + $input
+        } else if ($input.indexOf("INC") != -1) {
+            $urlTicketSearch = $urlTicketSearch + "/incident.do?sys_id=" + $input
+        } else if ($input.indexOf("TASK") != -1) {
+            $urlTicketSearch = $urlTicketSearch + "/sc_task.do?sys_id=" + $input
+        } else if ($input.indexOf("REQ") != -1) {
+            $urlTicketSearch = $urlTicketSearch + "/sc_request.do?sys_id=" + $input
+        } else {
+            $urlTicketSearch = $urlTicketSearch + "/textsearch.do?sysparm_no_redirect=true&sysparm_search=" + $input
+        }
+
+        chrome.tabs.create({
+            'url': $urlTicketSearch
+        })
+    })
 });
-
-function isEnableNotifications () {
-	return $(".check").is(":checked")
-}
-
-function getGroups() {
-	groups = $("#groupname").val()
-	return groups
-}
-
-function save_options() {
-	var notification = isEnableNotifications()
-	var groups = getGroups()
-	
-	chrome.storage.sync.set({
-		'groups' : groups
-	}, function () {
-		var status = document.getElementById('status');
-		status.textContent = 'Options saved';
-		$("#status").show();
-		setTimeout(function () {
-			$("#status").hide();
-			status.textContent = '';
-		}, 3000);
-	});
-}

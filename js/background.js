@@ -1,15 +1,18 @@
 chrome.browserAction.setBadgeText({text: "Wait"});
-var $currentNumberTickets 
-var $currentNumberWorkflows
+
+var $currentNumberTickets
+var $currentNumberTask
 var $currentNumberTotal
 var $ticketNumberGlobal
 var $idleState
 var $rootURL
+var $queueData;
+var $taskData;
 
-if ($rootURL == undefined) {$rootURL = "https://aomev.service-now.com"}
+if ($rootURL == undefined) {$rootURL = "https://chs.service-now.com"}
 if ($idleState == undefined) {$idleState = "active"}
 if ($currentNumberTickets == undefined) {$currentNumberTickets = 0}
-if ($currentNumberWorkflows == undefined) {$currentNumberWorkflows = 0}
+if ($currentNumberTask == undefined) {$currentNumberTask = 0}
 if ($currentNumberTotal == undefined) {$currentNumberTotal = 0}
 
 function showNotification(ticketNumber,ticketDescription,severity) {
@@ -27,6 +30,9 @@ function showNotification(ticketNumber,ticketDescription,severity) {
 		case "4":
 			imageName = "Sev4.png"
 			break;
+			case "10":
+				imageName = "ServiceRequest.png"
+				break;
 		default:
 			imageName = "ITSM128.png"
 	}
@@ -38,10 +44,16 @@ function showNotification(ticketNumber,ticketDescription,severity) {
      }, function(notificationId) {});
 }
 
+
 chrome.notifications.onClicked.addListener(notificationClicked);
 function notificationClicked () {
+	if($ticketNumberGlobal.startsWith("TASK")){
+	var urlTicketSearch = $rootURL + "/sc_task.do?sys_id=" + $ticketNumberGlobal
+	chrome.tabs.create({'url':urlTicketSearch})
+}else {
 	var urlTicketSearch = $rootURL + "/incident.do?sys_id=" + $ticketNumberGlobal
 	chrome.tabs.create({'url':urlTicketSearch})
+}
 }
 
 chrome.alarms.create("CheckTicketsAlarm", {delayInMinutes: 1, periodInMinutes: 1});
@@ -69,9 +81,16 @@ function getAssignmentGroupById (AGroupId) {
 	});
 	return $group
 }
+function getLog(items){
+	console.log(items.rootURL);
+	console.log(items.secondary);
+	console.log(items.primary);
+}
 
 function getGroupsSaved() {
-	chrome.storage.sync.get(['groups','specificURL','rootURL','searchunacceptedurl','followWorkflow'], loadPendingTasks );
+	chrome.storage.sync.get(['rootURL','secondary','primary'], loadPendingTasks );
+	// chrome.storage.sync.get(null, function (data) { console.info(data) });
+
 }
 
 function removeOtherGroups(xml,groups) {
@@ -84,7 +103,7 @@ function removeOtherGroups(xml,groups) {
 			$(this).remove();
 		}
 	})
-	
+
 	return xml
 }
 
@@ -93,109 +112,74 @@ function hasValue (item) {
 	return false
 }
 
-function loadTickesFromSearchURL (items) { 
-	var searchURL = changeURLforGetXML(items.searchunacceptedurl)
+function loadTickesFromSearchURL (items) {
+	var $BadgeCount;
+	var searchURL = changeURLforGetXML(items.primary)
+	var searchTaskURL = changeURLforGetXML(items.secondary)
 	$.ajax({
         type: "get",
         url: searchURL,
-		async: false,
+				async: false,
         dataType: "xml",
         success: function(data) {
-			var $allxml = $(data)
-			var group = items.groups
-			if ( hasValue(group) && group != "" ) {
-				group = group.replace("#","")
-				$allxml = removeOtherGroups($allxml, group)
-			}
-			var $quantTickets = $allxml.find("incident").length
-			chrome.browserAction.setBadgeText({text: $quantTickets.toString()});
-			var $ticketNumber = $allxml.find("incident").last().find("number")
-			var $severity = $allxml.find("incident").last().find("severity")
-			var $ticketDescription = $allxml.find("incident").last().find("short_description")
-			var $numberUpdated = $quantTickets
-			var $ticketAGroupId = $allxml.find("incident").last().find("assignment_group")
-			var $ticketAGroup = getAssignmentGroupById($ticketAGroupId.text())
-			
-			if (hasValue($currentNumberTickets) && ($quantTickets > $currentNumberTickets) && ($quantTickets > 0)) {	
-				$ticketNumberGlobal = $ticketNumber.text()
-				showNotification($ticketNumber.text(),$ticketDescription.text(), $severity.text())
-			} 
-			$currentNumberTickets = $quantTickets
-        },
-        error: function(xhr, status) {
-            chrome.browserAction.setBadgeText({text: "X"});
-        }
-	})
-}
+					$queueData = $(data);
+				},
+				error: function(xhr, status) {
+						chrome.browserAction.setBadgeText({text: "X"});
+				}
 
-function loadTicketsFromRootURL(items) {
-	if (items.rootURL != undefined) {
-		$rootURL = items.rootURL
-	}
-	$.ajax({
-        type: "get",
-        url: $rootURL + "/incident_list.do?XML&sysparm_query=incident_state=3^assignment_group=javascript:gs.getUser().getMyGroups()^%3B%5EORDERBYsys_updated_on&sysparm_view=",
-		async: false,
-        dataType: "xml",
-        success: function(data) {
-			var $allxml = $(data)
-			var group = items.groups
-			if ( hasValue(group) && group != "" ) {
-				group = group.replace("#","")
-				$allxml = removeOtherGroups($allxml, group)
-			}
-			var $quantTickets = $allxml.find("incident").length
-			chrome.browserAction.setBadgeText({text: $quantTickets.toString()});
-			var $ticketNumber = $allxml.find("incident").last().find("number")
-			var $ticketDescription = $allxml.find("incident").last().find("short_description")
-			var $numberUpdated = $quantTickets
-			var $severity = $allxml.find("incident").last().find("severity")
-			var $ticketAGroupId = $allxml.find("incident").last().find("assignment_group")
-			var $ticketAGroup = getAssignmentGroupById($ticketAGroupId.text())
-			
-			if (hasValue($currentNumberTickets) && ($numberUpdated > $currentNumberTickets) && ($numberUpdated > 0)) {	
-				$ticketNumberGlobal = $ticketNumber.text()
-				showNotification($ticketNumber.text(),$ticketDescription.text(), $severity.text() )
-			} 
-			$currentNumberTickets = $numberUpdated
-        },
-        error: function(xhr, status) {
-            chrome.browserAction.setBadgeText({text: "X"});
-        }
-	})
-}
+			})
+			$.ajax({
+		        type: "get",
+		        url: searchTaskURL,
+						async: false,
+		        dataType: "xml",
+		        success: function(data) {
+							$taskData = $(data);
+						},
+						error: function(xhr, status) {
+								chrome.browserAction.setBadgeText({text: "X"});
+						}
+			})
+			var $qTickets = $queueData.find("incident").length;
+			var $tTickets = $taskData.find("sc_task").length;
 
-function loadWorkflowsFromRootURL(items) {
-	if (items.rootURL != undefined) {
-		$rootURL = items.rootURL
-	}
-	$.ajax({
-        type: "get",
-        url: $rootURL + "/u_inc_wftask_list.do?XML&sysparm_query=iwt_u_assigned_group%3Djavascript%3AgetMyGroupsAdvanced2(4)%5Eiwt_u_assigned_group%3Dd2c17b14e9082d007e9753d310d3051b%5Eiwt_u_task_status%3D1%5EORDERBYinc_u_updated_by_customer&sysparm_view=",
-		async: false,
-        dataType: "xml",
-        success: function(data) {
-			var $allxml = $(data)
-			var $quantWorkflows = $allxml.find("u_inc_wftask").length
-			console.log("quantWorkflows " + $quantWorkflows)
-			$totalPending = $quantWorkflows + $currentNumberTickets
-			console.log("$totalPending " + $totalPending)
-			chrome.browserAction.setBadgeText({text: $quantWorkflows.toString() + "-" + $currentNumberTickets });
-			var $WFNumber = $allxml.find("u_inc_wftask").last().find("inc_number")
-			var $WFDescription = $allxml.find("u_inc_wftask").last().find("inc_short_description")
-			var $numberUpdated = $quantWorkflows
-			
-			if (hasValue($currentNumberTickets) && ($quantWorkflows > $currentNumberWorkflows) && ($quantWorkflows > 0)) {	
-				$ticketNumberGlobal = $WFNumber.text()
-				showNotification($WFNumber.text(),$WFDescription.text())
-			} 
-			$currentNumberWorkflows = $quantWorkflows
-			$currentNumberTotal = $currentNumberWorkflows + $currentNumberTickets
-        },
-        error: function(xhr, status) {
-            chrome.browserAction.setBadgeText({text: "X"});
-        }
-	})
+			$BadgeCount = $qTickets + $tTickets;
+			//chrome.browserAction.setBadgeText({text: ($BadgeCount).toString()});
+			chrome.browserAction.setBadgeText({text: ($qTickets).toString() + " |" + ($tTickets).toString()});
+			var $qticketNumber = $queueData.find("incident").last().find("number")
+			var $tticketNumber = $taskData.find("sc_task").last().find("number")
+			var $qseverity = $queueData.find("incident").last().find("severity")
+			var $tseverity = $taskData.find("sc_task").last().find("priority")
+			var $qticketDescription = $queueData.find("incident").last().find("short_description")
+			var $tticketDescription = $taskData.find("sc_task").last().find("short_description")
+			var $qupdatedOn = $queueData.find("incident").last().find("sys_updated_on").text()
+			var d1 = new Date($qupdatedOn);
+			var qtime = parseInt(d1.getTime());
+			var $tupdatedOn = $taskData.find("sc_task").last().find("sys_updated_on").text()
+			var d2 = new Date($tupdatedOn);
+			var ttime = parseInt(d2.getTime());
+			var $qnumberUpdated = $qTickets
+			var $tnumberUpdated = $tTickets
+
+			if(qtime > ttime){
+				$ticketNumber = $qticketNumber
+				$ticketDescription= $qticketDescription
+				$severity =  $qseverity.text()
+			}else {
+				$ticketNumber = $tticketNumber
+				$ticketDescription= $tticketDescription
+				$severity =  "10"
+			}
+
+			if (hasValue($currentNumberTickets) && ($BadgeCount > $currentNumberTickets) && ($BadgeCount > 0)) {
+				$ticketNumberGlobal = $ticketNumber.text()
+				showNotification($ticketNumber.text(),$ticketDescription.text(), $severity)
+			}
+			$currentNumberTickets = $BadgeCount
+
+
+
 }
 
 function changeURLforGetXML(url) {
@@ -203,62 +187,22 @@ function changeURLforGetXML(url) {
 	return url.slice(0,index+1) + "XML&" + url.slice(index+1,url.length)
 }
 
-function loadFromLink (items) {
-	urlXML = changeURLforGetXML(items.specificURL)
-	$.ajax({
-        type: "get",
-        url: urlXML,
-        dataType: "xml",
-		async: false,
-        success: function(data) {
-			var $allxml = $(data)
-			var $quantTask = $allxml.find("incident").length
-			
-			if ($allxml.find("incident").length > 0) {
-				$quantTask = $allxml.find("incident").length
-			} else if ($allxml.find("u_interruption_of_service").length > 0) {
-				$quantTask = $allxml.find("u_interruption_of_service").length
-			} else if ($allxml.find("problem").length > 0){
-				$quantTask = $allxml.find("problem").length
-			} else if ($allxml.find("change_request").length > 0) {
-				$quantTask = $allxml.find("change_request").length
-			}
-			
-			var badgeText = $quantTask.toString() + "  " + $currentNumberTickets.toString()
-			chrome.browserAction.setBadgeText({text: badgeText});
-			var $ticketNumber = $allxml.find("incident").last().find("number")
-			var $ticketDescription = $allxml.find("incident").last().find("short_description")
-			var $numberUpdated = $quantTask
-			
-			if (hasValue($currentNumberTasks) && ($numberUpdated > $currentNumberTasks) && ($numberUpdated > 0)) {	
-				$ticketNumberGlobal = $ticketNumber.text()
-				showNotification($ticketNumber.text(),$ticketDescription.text())
-			} 
-			$$currentNumberTasks = $numberUpdated
-        },
-        error: function(xhr, status) {
-            chrome.browserAction.setBadgeText({text: "X X"});
-        }
-	})
-}
 
-function loadPendingTasks(items) {	
+
+function loadPendingTasks(items) {
+
+	//console.log($idleState);
+	//console.log(items.primary);
 	if ($idleState != "locked") {
-		if (items.searchunacceptedurl != undefined && items.searchunacceptedurl != "") {
+		if (items.primary != undefined && items.primary != "") {
 			loadTickesFromSearchURL(items)
+			// loadtaskTickesFromSearchURL(items)
 		} else {
-			loadTicketsFromRootURL(items)
-		}
-		console.log("Checking follow workflow.....", items.followWorkflow)
-		if (items.followWorkflow) {
-			console.log("Follow Workflow")
-			loadWorkflowsFromRootURL(items)
-		} else	if (hasValue(items.specificURL) && items.specificURL != "") {
-			loadFromLink(items)
+			//chrome.storage.sync.get(null, function (data) { console.info(data) });
 		}
 	}
 }
-  
+
 chrome.runtime.onInstalled.addListener(function(details){
 	if(details.reason == "install"){
 		chrome.tabs.create({ 'url': 'chrome://extensions/?options=' + chrome.runtime.id });
@@ -268,4 +212,4 @@ chrome.runtime.onInstalled.addListener(function(details){
 
 chrome.idle.onStateChanged.addListener(function (state) {
 	$idleState = state
-})
+	})

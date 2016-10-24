@@ -1,54 +1,67 @@
 <!doctype html>
 <html>
-  <head>
-    <title>ITSM Alert</title>
-	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
-	<link href="css/popup.css" rel="stylesheet" media="screen" />
-  </head>
-  <body>
-	<div class="popup" >
-	<div id="status" class="alert alert-success"></div>
-	
-	<fieldset>
-		<legend>Create</legend> 
-		<div class="input-append">
-			<button class="btn btn-primary" id="newticket">Incident</button>
-			<button class="btn btn-primary" id="newproblem">Problem</button>
-			<button class="btn btn-primary" id="newcr">CR</button>
-			<button class="btn btn-primary" id="newios">IOS</button>
-		</div>
-	</fieldset>
-	</br>
-	<fieldset>
-		<legend>Search</legend> 
-		<div class="input-append">
-			<input class="span2" id="searchinput" type="text">
-			<button class="btn btn-primary" type="button" id="idsearch">Go!</button>
-		</div>
-	</fieldset>
-	</br>
-	<fieldset>
-		<legend>Options</legend> 
-		Follow just group</br>
-		<div class="input-append">
-		  <input class="span2" type="text" placeholder="Group" id="groupname">
-		  <button class="btn btn-primary" id="save">Save</button>
-		</div>
-		<label class="checkbox">
-		  <input id="allgroups" class="check" type="checkbox"> All Groups
-		</label>
-	</fieldset>
-	</br>
-	<fieldset>
-		<legend>Lists</legend> 
-		<button class="btn btn-block btn-primary" type="button" id="idunacceptedbutton">Unaccepted Tickets</button>
-		<button class="btn btn-block btn-primary" type="button" id="idacceptedbutton">Accepted by Me</button>
-		<button class="btn btn-block btn-primary" type="button" id="idunacceptedworkflowbutton">Unaccepted Workflows</button>
-	</fieldset>
-	</div>
-	<script src="js/jquery.js"></script>
-	<script src="js/popup.js"></script>
-	<script src="js/bootstrap.min.js"></script> 
-  </body>
-</html>
 
+<head>
+    <title>SNOW Alert</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <link href="css/popup.css" rel="stylesheet" media="screen" />
+</head>
+
+<body>
+    <div class="popup">
+        <!-- <div id="status" class="alert alert-success"></div> -->
+        <div class="create">
+            <fieldset>
+                <legend>Create</legend>
+                <div class="inputwrap">
+                    <div class="input-append">
+                        <button class="btn btn-primary call" id="newcallbtn">Call</button>
+                        <button class="btn btn-primary incident" id="newticketbtn">Incident</button>
+                        <button class="btn btn-primary change" id="newchangebtn">Change</button>
+                        <button class="btn btn-primary request" id="newrequestbtn">Request</button>
+
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="search">
+        <fieldset>
+            <legend>Search</legend>
+            <div class="inputwrap">
+                <div class="input-append">
+                    <input class="span2" id="searchinput" type="text">
+                    <button class="btn btn-primary" type="button" id="idsearch">Go!</button>
+                </div>
+            </div>
+        </fieldset>
+      </div>
+        <div class="queues">
+        <fieldset>
+            <legend>Queues</legend>
+            <div class="inputwrap">
+                <button class="btn btn-block btn-primary queue1" type="button" id="queue1btn"><span class="q1name"></span></button>
+                <button class="btn btn-block btn-primary queue2" type="button" id="queue2btn"><span class="q2name"></span></button>
+                <button class="btn btn-block btn-primary queue3" type="button" id="queue3btn"><span class="q3name"></span></button>
+                <button class="btn btn-block btn-primary queue4" type="button" id="queue4btn"><span class="q4name"></span></button>
+            </div>
+        </fieldset>
+      </div>
+        <br>
+        <div class="lists">
+        <fieldset>
+            <legend>My Lists</legend>
+            <div class="inputwrap">
+                <button class="btn btn-block btn-primary list1" type="button" id="list1btn"><span class="l1name"></span></button>
+                <button class="btn btn-block btn-primary list2" type="button" id="list2btn"><span class="l2name"></span></button>
+                <button class="btn btn-block btn-primary list3" type="button" id="list3btn"><span class="l3name"></span></button>
+                <button class="btn btn-block btn-primary list4" type="button" id="list4btn"><span class="l4name"></span></button>
+            </div>
+        </fieldset>
+      </div>
+    </div>
+    <script src="js/jquery.js"></script>
+    <script src="js/popup.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>

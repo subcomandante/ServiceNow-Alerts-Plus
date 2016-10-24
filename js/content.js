@@ -18,7 +18,7 @@ function checkDelay () {
 		}
 	});
 	setTimeout(function(){
-		console.log("delay final " + delay);		
+		console.log("delay final " + delay);
 		return delay;
 	}, 20);
 }

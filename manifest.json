@@ -1,32 +1,32 @@
 {
   "manifest_version": 2,
 
-  "name": "ServiceNow Alert",
-  "short_name": "ServiceNow Alert Beta",
-  "description": "This extension shows the updates of ServiceNow",
-  "version": "1.1.18",
-  
+  "name": "CHS ServiceNow Alert",
+  "short_name": "CHS ServiceNow Alert Beta",
+  "description": "This extension shows status of unassigned queue, and provides quick links to Service Now operations.",
+  "version": "0.0.10",
+
   "options_page": "options.html",
   "background": {
     "scripts": ["js/jquery.js","js/background.js"],
     "persistent": true
   },
-  
+
   "browser_action": {
 	"default_title": "ServiceNow Alert",
     "default_icon": "images/ITSM50.png",
 	"default_popup": "popup.html"
   },
-  
+
   "icons": { "16": "images/ITSM16.png",
              "48": "images/ITSM48.png",
              "128": "images/ITSM128.png" },
-  
+
   "permissions": [
-    "alarms", 
-	"notifications", 
-	"tabs", 
-	"storage", 
+    "alarms",
+	"notifications",
+	"tabs",
+	"storage",
 	"idle",
 	"*://*/*"
   ]

@@ -1,42 +1,166 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="generator"
-    content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
-    <title>ITSM Alert Options</title>
+
+<head>
+    <meta name="generator" content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
+    <title>SNOW Alert Options</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
-	<link href="css/options.css" rel="stylesheet" media="screen" />
-  </head>
-  <body>
-  <div class="alert alert-success" id="status"></div>
-  
-  <div class="settings">
-  <fieldset>
-  <legend>Settings</legend> 
-		<label>URL root of your ServiceNow</label> 
-		<input id="idrooturl" type="text" class="input-xlarge" placeholder="https://aomev.service-now.com" />
-		<b><i>OR</i></b><br/>
-		Paste the ServiceNow URL you want to follow
-		<input id="idunacceptedcalls" type="text" class="input-block-level" placeholder="https://aomev.service-now.com/incident_list.do?sysparm_userpref_module=3357969fa14c71001d242169f15e70ac&sysparm_query=incident_st..." />
-		
-		<br/><br/>
-		<label>Follow a specific URL search of ITSM</label> 
-		<input id="idurl" type="text" class="input-block-level" placeholder="URL to be verified.." />
-		<label class="checkbox">
-			<input id="searchpage" class="check" type="checkbox"> Turn off Search Page verification
-		</label>
-		<label class="checkbox">
-			<input id="followWorkflow" class="check" type="checkbox"> Follow workflow tasks
-		</label>
-		<br/>
-		<br/>
-		<button class="btn btn-success" id="save">Save</button>
-  </fieldset>
-  </div>
-  
-  <!--<button class="btn btn-success" id="clear">Clear</button></fieldset>-->
-  
-  <script src="js/jquery.js"></script> 
-  <script src="js/bootstrap.min.js"></script></body>
-  <script src="js/options.js"></script> 
+    <link href="css/options.css" rel="stylesheet" media="screen" />
+</head>
+
+<body>
+    <div class="alert alert-success" id="status"></div>
+
+    <div class="settings">
+        <fieldset>
+            <legend>Popup Settings</legend>
+            <span class="info">Check the Box to show the option on the Popup Screen.</span>
+            <ul>
+                <li><input type="checkbox" name="option" value="create" id="create" class="check clicker ts1"/> <span class="hideCat">Create</span>
+                  <!-- <span class="glyphicon glyphicon-triangle-bottom clicker myHide1"></span><span class="glyphicon glyphicon-triangle-top clicker myShow1"></span> -->
+                    <ul class="myHide1">
+                        <li><input type="checkbox" name="option" value="call" id="call" class="check"/> Call</li>
+                        <li><input type="checkbox" name="option" value="incident" id="incident" class="check"/> Incident</li>
+                        <li><input type="checkbox" name="option" value="change" id="change" class="check"/> Change</li>
+                        <li><input type="checkbox" name="option" value="request" id="request" class="check"/> Request</li>
+                    </ul>
+                </li>
+                <li><input type="checkbox" name="option" value="search" id="search" class="check"/> <span class="hideCat">Search</span></li>
+                <li><input type="checkbox" name="option" value="queues" id="queues" class="check clicker ts2"/> <span class="hideCat">Queues</span>
+                    <ul class="myHide2">
+                        <li>
+
+                            <input type="checkbox" name="option" value="queue1" class="check clicker q1" id="queue1"/> Queue 1
+
+                            <div class="queue1">
+                                <div class="form-group">
+                                    <label class="control-label">Name:</label>
+                                    <input type="text" class="form-control input-sm" id="q1name" style="width:50%;" placeholder="Name of the Queue">
+                                    <label>URL:</label>
+                                    <input type="text" class="form-control input-sm" id="q1url" style="width:50%;" placeholder="https://<your instance>.service-now.com/task_list.do?sysparm_view=">
+                                    <span class="help-block">Enter the Name and the URL to the Service Now Queue.The name will appear on the button.</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li><input type="checkbox" name="option" value="queue2" class="check clicker q2" id="queue2"/> Queue 2
+
+                            <div class="queue2">
+                                <div class="form-group">
+                                    <label for="pwd">Name:</label>
+                                    <input type="text" class="form-control input-sm" id="q2name" style="width:50%;" placeholder="Name of the Queue">
+                                    <label for="pwd">URL:</label>
+                                    <input type="text" class="form-control input-sm" id="q2url" style="width:50%;" placeholder="https://<your instance>.service-now.com/task_list.do?sysparm_view=">
+                                    <span class="help-block">Enter the Name and the URL to the Service Now Queue.The name will appear on the button.</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li><input type="checkbox" name="option" value="queue3" class="check clicker q3" id="queue3"/> Queue 3
+
+                            <div class="queue3">
+                                <div class="form-group">
+                                    <label for="pwd">Name:</label>
+                                    <input type="text" class="form-control input-sm" id="q3name" style="width:50%;" placeholder="Name of the Queue">
+                                    <label for="pwd">URL:</label>
+                                    <input type="text" class="form-control input-sm" id="q3url" style="width:50%;" placeholder="https://<your instance>.service-now.com/task_list.do?sysparm_view=">
+                                    <span class="help-block">Enter the Name and the URL to the Service Now Queue.The name will appear on the button.</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li><input type="checkbox" name="option" value="queue4" class="check clicker q4" id="queue4"/> Queue 4
+
+                            <div class="queue4">
+                                <div class="form-group">
+                                    <label for="pwd">Name:</label>
+                                    <input type="text" class="form-control input-sm" id="q4name" style="width:50%;" placeholder="Name of the Queue">
+                                    <label for="pwd">URL:</label>
+                                    <input type="text" class="form-control input-sm" id="q4url" style="width:50%;" placeholder="https://<your instance>.service-now.com/task_list.do?sysparm_view=">
+                                    <span class="help-block">Enter the Name and the URL to the Service Now Queue.The name will appear on the button.</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li><input type="checkbox" name="option" value="lists" id="lists" class="clicker ts3"/> <span class="hideCat">My List</span>
+                    <ul class="myHide3">
+                        <li><input type="checkbox" name="option" value="list1" class="check clicker l1" id="list1"/> List 1
+                            <div class="list1">
+                                <div class="form-group">
+                                    <label for="pwd">Name:</label>
+                                    <input type="text" class="form-control input-sm" id="l1name" style="width:50%;" placeholder="Name of the List">
+                                    <label for="pwd">URL:</label>
+                                    <input type="text" class="form-control input-sm" id="l1url" style="width:50%;" placeholder="https://<your instance>.service-now.com/task_list.do?sysparm_view=">
+                                    <span class="help-block">Enter the Name and the URL to the Service Now List.The name will appear on the button.</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li><input type="checkbox" name="option" value="list2" class="check clicker l2" id="list2"/> List 2
+                            <div class="list2">
+                                <div class="form-group">
+                                    <label>Name:</label>
+                                    <input type="text" class="form-control input-sm" id="l2name" style="width:50%;" placeholder="Name of the List">
+                                    <label>URL:</label>
+                                    <input type="text" class="form-control input-sm" id="l2url" style="width:50%;" placeholder="https://<your instance>.service-now.com/task_list.do?sysparm_view=">
+                                    <span class="help-block">Enter the Name and the URL to the Service Now List.The name will appear on the button.</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li><input type="checkbox" name="option" value="list3" class="check clicker l3" id="list3"/> List 3
+                            <div class="list3">
+                                <div class="form-group">
+                                    <label>Name:</label>
+                                    <input type="text" class="form-control input-sm" id="l3name" style="width:50%;" placeholder="Name of the List">
+                                    <label>URL:</label>
+                                    <input type="text" class="form-control input-sm" id="l3url" style="width:50%;" placeholder="https://<your instance>.service-now.com/task_list.do?sysparm_view=">
+                                    <span class="help-block">Enter the Name and the URL to the Service Now List.The name will appear on the button.</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li><input type="checkbox" name="option" value="list4" class="check clicker l4" id="list4"/> List 4
+                            <div class="list4">
+                                <div class="form-group">
+                                    <label>Name:</label>
+                                    <input type="text" class="form-control input-sm" id="l4name" style="width:50%;" placeholder="Name of the List">
+                                    <label>URL:</label>
+                                    <input type="text" class="form-control input-sm" id="l4url" style="width:50%;" placeholder="https://<your instance>.service-now.com/task_list.do?sysparm_view=">
+                                    <span class="help-block">Enter the Name and the URL to the Service Now List.The name will appear on the button.</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </fieldset>
+
+        <fieldset>
+            <legend>Notification Settings</legend>
+            <div class="form-group">
+                <label for="pwd">URL:</label>
+                <input id="idrooturl" type="text" class="form-control input-sm" style="width:50%;" placeholder="https://<your instance>.service-now.com"/>
+                <span class="help-block">This fiel requires the Base URL for your Service Now Instance.</span>
+            </div>
+            <br/>
+            <div class="form-group">
+                <label for="pwd">URL:</label>
+                <input id="idprimaryq" type="text" class="form-control input-sm" style="width:50%;" placeholder="https://<your instance>.service-now.com/task_list.do?sysparm_view="/>
+                <span class="help-block">Please enter a queue you would like to receive notifications.</span>
+            </div>
+            <div class="form-group">
+                <label for="pwd">URL:</label>
+                <input id="idsecondaryq" type="text" class="form-control input-sm" style="width:50%;" placeholder="https://<your instance>.service-now.com/task_list.do?sysparm_view="/>
+                <span class="help-block">Please enter a queue you would like to receive notifications.</span>
+            </div>
+            <br/><br/>
+            <button class="btn btn-success" id="save">Save</button>
+            <button class="btn btn-success" id="clear">Clear</button></fieldset>
+    </div>
+
+
+
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/options.js"></script>
+    <script src="js/background.js"></script>
+</body>
+
 </html>
