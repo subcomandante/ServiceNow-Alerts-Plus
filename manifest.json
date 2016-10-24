@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "CHS ServiceNow Alert",
-  "short_name": "CHS ServiceNow Alert Beta",
+  "name": "ServiceNow Alert",
+  "short_name": "ServiceNow Alert Beta",
   "description": "This extension shows status of unassigned queue, and provides quick links to Service Now operations.",
   "version": "0.0.10",
 
