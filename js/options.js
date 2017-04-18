@@ -68,6 +68,7 @@ function save_options() {
 			'primary': primary,
 			'rooturl': rooturl,
 			'secondary': secondary,
+      'splitcount' : $("input[name='splitcount']:checked").val(),
       'q1name' : $("#q1name").val(),
       'q1url' : $("#q1url").val(),
       'q2name' : $("#q2name").val(),
@@ -116,9 +117,10 @@ function save_options() {
 
     chrome.storage.sync.set(saveMe, function() {
         showSuccessMessage("Options saved!")
-        getGroupsSaved();
     });
+    window.scrollTo(0,0);
     chrome.storage.sync.get(null, function (data) { console.info(data) });
+    getSavedData();
 }
 
 function isEmpty(value) {
@@ -202,7 +204,13 @@ function restore_options() {
                              'l3name',
                              'l3url',
                              'l4name',
-                             'l4url'], function(items) {
+                             'l4url',
+                             'splitcount'], function(items) {
+        if(items.splitcount == "true"){
+          $("#splitcounttrue").attr("checked", true);
+        }else {
+          $("#splitcountfalse").attr("checked", true);
+        }
         $("#idrooturl").val(items.rooturl);
         $("#idsecondaryq").val(items.secondary);
         $("#idprimaryq").val(items.primary);

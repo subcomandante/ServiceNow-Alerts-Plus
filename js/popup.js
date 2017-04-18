@@ -116,21 +116,32 @@ $(document).ready(function() {
 
     $("#idsearch").click(function() {
         var $input = $("#searchinput").val()
-        var $urlTicketSearch = $rootURL
-        if ($input.indexOf("RITM") != -1) {
-            $urlTicketSearch = $urlTicketSearch + "/sc_req_item.do?sys_id=" + $input
-        } else if ($input.indexOf("INC") != -1) {
-            $urlTicketSearch = $urlTicketSearch + "/incident.do?sys_id=" + $input
-        } else if ($input.indexOf("TASK") != -1) {
-            $urlTicketSearch = $urlTicketSearch + "/sc_task.do?sys_id=" + $input
-        } else if ($input.indexOf("REQ") != -1) {
-            $urlTicketSearch = $urlTicketSearch + "/sc_request.do?sys_id=" + $input
-        } else {
-            $urlTicketSearch = $urlTicketSearch + "/textsearch.do?sysparm_no_redirect=true&sysparm_search=" + $input
-        }
+        var urlTicketSearch;
+        switch ($input.substring(0,3)) {
+      			case "TAS":
+      					urlTicketSearch = $rootURL + "/sc_task.do?sys_id=" + $input
+      					break;
+      			case "INC":
+      					urlTicketSearch = $rootURL + "/incident.do?sys_id=" + $input
+      					break;
+      			case "REQ":
+      					urlTicketSearch = $rootURL + "/sc_request.do?sys_id=" + $input
+      					break;
+      			case "CHG":
+      					urlTicketSearch = $rootURL + "/change_request.do?sys_id=" + $input
+      					break;
+      			case "RIT":
+      					urlTicketSearch = $rootURL + "/sc_req_item.do?sys_id=" + $input
+      					break;
+      			case "CAL":
+      					urlTicketSearch = $rootURL + "/new_call.do?sys_id=" + $input
+      					break;
+      			default:
+      					urlTicketSearch = $rootURL + "/task_list.do?sysparm_query=numberLIKE" + $input + "&sysparm_first_row=1&sysparm_view=" + $input
+      	}
 
         chrome.tabs.create({
-            'url': $urlTicketSearch
+            'url': urlTicketSearch
         })
     })
 });
