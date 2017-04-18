@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Service Now Alert Help</title>
+    
+</head>
+<body>
+    <h1>Service Now Alert</h1>
+    <h3>Setup:</h3>
+    <p>Once you have enabled the Service Now (SNOW) Alert Exentension, right click on the extension icon and go to Options. In options you will see two main catagorys of settings. The Popup Settings and the Notification settings.</p>
+    <img src="images/options.png" alt="" style="border:2px solid black"/>
+    <h2>Popup Settings</h2><p>The Popup settings allow you to configure the dropdown popup of the Extension to your liking. Allowing you to only show what you need. For instances to display a section check the checkbox next to the section. </p>
+    <p><strong>Create:</strong> This section is for buttons to create new Call Tickets, Incidents, Change Requests, and Service Requests </p>
+    <p><strong>Search:</strong> This section simply hides or shows the search box in the popup.</p>
+    <p><strong>Queues:</strong> This section is customizable to create shortcuts to each queue you may need to see. EX. (different departments)<br />In the Name field you will give it a name to be seen on the button. The URL field can be retrieved by copying the needed URL from your service now instance.</p>
+    <p><strong>My List:</strong> This section is similar to the Queues section, and works the same way, but you may want to configure these to work i have completed or work i need to do...</p>
+    
+    <h2>Notification Settings</h2>
+    <p>The Notification settings allow for notification popups to display when a new ticket hits a certain queue. You can also display the count of open tickets in the Extention Icon bubble.</p>
+    <p><strong>Base URL:</strong>This field requires your Base Service Now URL. EX. "&lt;yourinstance&gt;.service-now.com"</p>
+    <p><strong>Notify 1 URL:</strong>This field is for the URL for the first queue you would like notification data from. To get the URL in Service now load the queue you would like to monitor. In the frame to the right, right click and select view Frame Source. In the new window copy the url after view-source:</p>
+    <img src="images/getFrame.png" alt="" style="border:2px solid black"/>
+    <br />
+    <img src="images/viewS.png" alt="" style="border:2px solid black" />
+    <p><strong>Notify 2 URL:</strong>This is the second Notification URL generate URL as you did for Notify 1.</p>
+    <p><strong>Split Badge:</strong>This allows you to seperate the two Notify counts in the Extension Icon. If true the Numbers will appear "2 | 3" if False the numbers will be a total: "5"</p>
+    <img src="images/split.png" alt=""  style="border:2px solid black"/>
+    <img src="images/sum.png" alt="" style="border:2px solid black"/>
+</body>
+</html>

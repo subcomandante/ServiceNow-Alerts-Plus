@@ -1,10 +1,10 @@
 {
   "manifest_version": 2,
 
-  "name": "ServiceNow Alert",
-  "short_name": "ServiceNow Alert Beta",
+  "name": "ServiceNow Alerts",
+  "short_name": "ServiceNow Alerts",
   "description": "This extension shows status of unassigned queue, and provides quick links to Service Now operations.",
-  "version": "0.0.10",
+  "version": "1.5.0",
 
   "options_page": "options.html",
   "background": {
@@ -13,7 +13,7 @@
   },
 
   "browser_action": {
-	"default_title": "ServiceNow Alert",
+	"default_title": "ServiceNow Alerts",
     "default_icon": "images/ITSM50.png",
 	"default_popup": "popup.html"
   },
