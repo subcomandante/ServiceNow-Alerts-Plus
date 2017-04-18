@@ -9,7 +9,6 @@
     <p><strong>Search:</strong> This section simply hides or shows the search box in the popup.</p>
     <p><strong>Queues:</strong> This section is customizable to create shortcuts to each queue you may need to see. EX. (different departments)<br />In the Name field you will give it a name to be seen on the button. The URL field can be retrieved by copying the needed URL from your service now instance.</p>
     <p><strong>My List:</strong> This section is similar to the Queues section, and works the same way, but you may want to configure these to work i have completed or work i need to do...</p>
-    
     <h2>Notification Settings</h2>
     <p>The Notification settings allow for notification popups to display when a new ticket hits a certain queue. You can also display the count of open tickets in the Extention Icon bubble.</p>
     <p><strong>Base URL:</strong>This field requires your Base Service Now URL. EX. "&lt;yourinstance&gt;.service-now.com"</p>
