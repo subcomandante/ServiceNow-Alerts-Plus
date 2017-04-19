@@ -1,6 +1,6 @@
 
 <body>
-    <h1>Service Now Alert</h1>
+    <h1>Service Now Alerts</h1>
     <h3>Setup:</h3>
     <p>Once you have enabled the Service Now (SNOW) Alert Exentension, right click on the extension icon and go to Options. In options you will see two main catagorys of settings. The Popup Settings and the Notification settings.</p>
     <img src="images/options.png" alt="" style="border:2px solid black"/>
