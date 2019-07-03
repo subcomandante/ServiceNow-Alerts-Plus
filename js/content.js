@@ -14,7 +14,7 @@ function checkDelay () {
 		if (delay == 999) {
 			delay = 30000;
 		} else {
-			delay = delay*10000*6;
+			delay = delay*1000*60;
 		}
 	});
 	setTimeout(function(){
@@ -29,7 +29,7 @@ function getDelayOption() {
 		if (fdelay == 999) {
 			delay = 30000;
 		} else {
-			delay = fdelay*10000*6;
+			delay = fdelay*1000*60;
 		}
 	});
 }
