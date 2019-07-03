@@ -1,12 +1,16 @@
 .popup {
-	padding: 20px;
+	padding: 10px 20px 5px 20px;
 	width: 360px;
 	border: 2px solid #E7FFB0;
 	color: black;
 }
 
+.popupHeader {
+	font-size: 20px;
+}
+
 .inputwrap{
-	text-align: center;
+	text-align: right;
 }
 
 .create,
@@ -26,4 +30,9 @@
 .list3,
 .list4{
 	display: none;
+}
+
+.popupFooter {
+	text-align: right;
+	font-style: italic;
 }

@@ -42,3 +42,7 @@ font-weight: bold;
 .list3, .list4{
 	display: none;
 }
+
+legend {
+    font-size: 25px;
+}
