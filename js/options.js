@@ -100,7 +100,9 @@ function save_options() {
       'list1' : false,
       'list2' : false,
       'list3' : false,
-      'list4' : false
+      'list4' : false,
+	  'repeatAlert' : $("input[name='repeatAlert']:checked").val(),
+	  'favoriteDelay' : $("#favoriteDelay").val()
 		}
 
     // if (isEmpty(rooturl) && isEmpty(secondary)) {
@@ -205,11 +207,18 @@ function restore_options() {
                              'l3url',
                              'l4name',
                              'l4url',
-                             'splitcount'], function(items) {
+                             'splitcount',
+							 'repeatAlert',
+							 'favoriteDelay'], function(items) {
         if(items.splitcount == "true"){
           $("#splitcounttrue").attr("checked", true);
         }else {
           $("#splitcountfalse").attr("checked", true);
+        }
+        if(items.repeatAlert == "true"){
+          $("#repeatAlerttrue").attr("checked", true);
+        }else {
+          $("#repeatAlertfalse").attr("checked", true);
         }
         $("#idrooturl").val(items.rooturl);
         $("#idsecondaryq").val(items.secondary);
@@ -230,6 +239,7 @@ function restore_options() {
         $("#l3url").val(items.l3url),
         $("#l4name").val(items.l4name),
         $("#l4url").val(items.l4url),
+        $("#favoriteDelay").val(items.favoriteDelay),
         $.each(items, function (key, value) {
           if (value === true){
             if(key == "create"){

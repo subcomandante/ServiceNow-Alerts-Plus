@@ -48,7 +48,7 @@ chrome.alarms.onAlarm.addListener(function(info, tab) {
 
 
 function getSavedData() {
-    chrome.storage.sync.get(['rooturl', 'secondary', 'primary', 'splitcount'], getQueues);
+    chrome.storage.sync.get(['rooturl', 'secondary', 'primary', 'splitcount','repeatAlert'], getQueues);
     //  chrome.storage.sync.get(null, function (data) { console.info(data) });
 
 }
@@ -70,7 +70,7 @@ function getQueues(items) {
             var data = getData(primaryURL);
             totalCount = data['quantity'];
             if ($currentNumberTotal < totalCount) {
-								$ticketNumberGlobal = data['number'];
+                $ticketNumberGlobal = data['number'];
                 showNotification(data['number'], data['description'], data['severity'])
             }
 
@@ -82,18 +82,24 @@ function getQueues(items) {
 
             // handle request for 1 field
         } else if (count == 2) {
+            //var updateAlert = "false";
             var data1 = getData(primaryURL);
             var data2 = getData(secondaryURL);
             totalCount = (data1['quantity'] + data2['quantity']);
-            if ($currentNumberTotal < totalCount) {
+            if (items.repeatAlert == "true") {
+                if (data1['quantity'] > 0) {
+                    //updateAlert="true";
+                    showNotification(data1['number'], data1['description'], data1['severity'])
+                }
+            }else if ($currentNumberTotal < totalCount) {
                 if (data1.timestamp > data2.timestamp) {
                     if (data1.timestamp > newStamp) {
                         newStamp = data1.timestamp;
-												$ticketNumberGlobal = data1['number'];
+                        $ticketNumberGlobal = data1['number'];
                         showNotification(data1['number'], data1['description'], data1['severity'])
                         if (items.splitcount == "true") {
                             chrome.browserAction.setBadgeText({
-                                text: (data1['quantity']).toString() + " |" + (data2['quantity']).toString()
+                                text: (data1['quantity']).toString() + " | " + (data2['quantity']).toString()
                             });
                         } else {
                             chrome.browserAction.setBadgeText({
@@ -104,7 +110,7 @@ function getQueues(items) {
                 } else {
                     if (data2.timestamp > newStamp) {
                         newStamp = data2.timestamp;
-												$ticketNumberGlobal = data2['number'];
+                        $ticketNumberGlobal = data2['number'];
                         showNotification(data2['number'], data2['description'], data2['severity'])
 
                     }
@@ -112,7 +118,7 @@ function getQueues(items) {
             }
             if (items.splitcount == "true") {
                 chrome.browserAction.setBadgeText({
-                    text: (data1['quantity']).toString() + " |" + (data2['quantity']).toString()
+                    text: (data1['quantity']).toString() + " | " + (data2['quantity']).toString()
                 });
             } else {
                 chrome.browserAction.setBadgeText({
@@ -298,7 +304,8 @@ function showNotification(ticketNumber, ticketDescription, severity) {
         type: 'basic',
         iconUrl: 'images/' + imageName,
         title: ticketNumber,
-        message: ticketDescription
+        message: ticketDescription,
+        //requireInteraction: true,             // TODO: Persistent alert
     }, function(notificationId) {});
 }
 

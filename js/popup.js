@@ -2,7 +2,7 @@ var $rootURL;
 var savedData;
 
 function loadOptions() {
-    chrome.storage.sync.get(['rooturl', 'q1name', 'q1url', 'q2name', 'q2url', 'q3name', 'q3url' , 'q4name', 'q4url' , 'l1name' , 'l1url' , 'l2name', 'l2url', 'l3name', 'l3url', 'l4name', 'l4url', 'create', 'call', 'incident', 'change', 'request', 'search', 'queues', 'queue1', 'queue2', 'queue3', 'queue4', 'lists', 'list1', 'list2', 'list3', 'list4'], function(items) {
+    chrome.storage.sync.get(['rooturl', 'q1name', 'q1url', 'q2name', 'q2url', 'q3name', 'q3url' , 'q4name', 'q4url' , 'l1name' , 'l1url' , 'l2name', 'l2url', 'l3name', 'l3url', 'l4name', 'l4url', 'create', 'call', 'incident', 'change', 'request', 'search', 'queues', 'queue1', 'queue2', 'queue3', 'queue4', 'lists', 'list1', 'list2', 'list3', 'list4','repeatAlert','favoriteDelay'], function(items) {
 				savedData = items;
 
 				if (items.rooturl == undefined) {
