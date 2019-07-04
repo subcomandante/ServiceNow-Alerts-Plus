@@ -101,9 +101,10 @@ function save_options() {
       'list2' : false,
       'list3' : false,
       'list4' : false,
-	  'repeatAlert' : $("input[name='repeatAlert']:checked").val(),
-	  'favoriteDelay' : $("#favoriteDelay").val()
-		}
+      'repeatAlert' : $("input[name='repeatAlert']:checked").val(),
+      'pollingInterval' : $("#pollingInterval").val(),
+      'favoriteDelay' : $("#favoriteDelay").val()
+    }
 
     // if (isEmpty(rooturl) && isEmpty(secondary)) {
     //     rooturl = "https://chs.service-now.com"
@@ -208,8 +209,9 @@ function restore_options() {
                              'l4name',
                              'l4url',
                              'splitcount',
-							 'repeatAlert',
-							 'favoriteDelay'], function(items) {
+                             'repeatAlert',
+                             'pollingInterval',
+                             'favoriteDelay'], function(items) {
         if(items.splitcount == "true"){
           $("#splitcounttrue").attr("checked", true);
         }else {
@@ -239,6 +241,7 @@ function restore_options() {
         $("#l3url").val(items.l3url),
         $("#l4name").val(items.l4name),
         $("#l4url").val(items.l4url),
+        $("#pollingInterval").val(items.pollingInterval),
         $("#favoriteDelay").val(items.favoriteDelay),
         $.each(items, function (key, value) {
           if (value === true){

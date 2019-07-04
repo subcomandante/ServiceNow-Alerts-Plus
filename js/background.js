@@ -48,7 +48,7 @@ chrome.alarms.onAlarm.addListener(function(info, tab) {
 
 
 function getSavedData() {
-    chrome.storage.sync.get(['rooturl', 'secondary', 'primary', 'splitcount','repeatAlert'], getQueues);
+    chrome.storage.sync.get(['rooturl', 'secondary', 'primary', 'splitcount','repeatAlert','pollingInterval'], getQueues);
     //  chrome.storage.sync.get(null, function (data) { console.info(data) });
 
 }
