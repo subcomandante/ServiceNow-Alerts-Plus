@@ -37,9 +37,12 @@ chrome.runtime.onInstalled.addListener(function(details) {
     getSavedData();
 });
 
-chrome.alarms.create("CheckTicketsAlarm", {
-    delayInMinutes: 1,
-    periodInMinutes: 1
+chrome.storage.sync.get(['pollingInterval'], function(items) {
+    var pollingInterval=parseInt(items.pollingInterval);
+    chrome.alarms.create("CheckTicketsAlarm", {
+    delayInMinutes: pollingInterval,
+    periodInMinutes: pollingInterval
+    });
 });
 
 chrome.alarms.onAlarm.addListener(function(info, tab) {
